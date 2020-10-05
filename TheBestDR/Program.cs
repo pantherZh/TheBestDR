@@ -28,7 +28,11 @@ namespace std
                  new Task<Bank>(()=> new Bank("IdeaBank", "https://www.ideabank.by/", @"<td>(.*?)</td>(.*?)<td>(.*?)</td>(.*?)<td>(.*?)</td>", 3, 5)),
                  new Task<Bank>(()=> new Bank("BelVeb","https://www.belveb.by/individual/",@"<td>Доллар США</td>(.*?)<td>(.*?)</td>(.*?)<td>(.*?)</td>",2,4)),
                  new Task<Bank>(()=> new Bank("Bank Dabrabyt","https://bankdabrabyt.by/currency_exchange/",@"<td>(.*?)</td>(.*?)<td>(.*?)</td><td>(.*?)</td>",3,4)),
+<<<<<<< HEAD
+                 //new Task<Bank>(()=> new Bank("AbsolytBank","https://absolutbank.by/exchange-rates.xml",@"<buy>(.*?)</buy>(.*?)<sell>(.*?)</sell>",1,3)),
+=======
                  new Task<Bank>(()=> new Bank("AbsolytBank","https://absolutbank.by/exchange-rates.xml",@"<buy>(.*?)</buy>(.*?)<sell>(.*?)</sell>",1,3)),
+>>>>>>> bc848b090e71018601f93b45099d9678dc34570d
                  new Task<Bank>(()=> new Bank("Rbank","https://rbank.by/",@"<span class=""new-summ"">(.*?)</span>(.*?)<span class=""new-summ"">(.*?)</span>",1,3)),
                  new Task<Bank>(()=> new Bank("Bps-sberbank","https://www.bps-sberbank.by/",@"<div class=""BlockCurrencyExchangeRates__rate-item_buy-rate"">(.*?)</div>(.*?)<div class=""BlockCurrencyExchangeRates__rate-item_sell-rate"">(.*?)</div>",1,3)),
                  new Task<Bank>(()=> new Bank("BsbBank","https://www.bsb.by/",@"<span class=""exchange-scale"">(.*?)</span>(.*?)</th>(.*?)<td>(.*?)</td>(.*?)<td>(.*?)</td>",4,6) ),
@@ -55,6 +59,15 @@ namespace std
             }
             Task.WaitAll(tasks);
 
+<<<<<<< HEAD
+            List<Currency> currency_in = new List<Currency>();
+            List<Currency> currency_out = new List<Currency>();
+            foreach (var t in tasks)
+            {
+                //Console.WriteLine("Name - " + b.Name + ":\t\t" + "\tПокупка - " + b.USD_in + "\tПродажа - " + b.USD_out);
+                currency_in.Add(new Currency { Name = t.Result.Name, USD_in = t.Result.USD_in });
+                currency_out.Add(new Currency { Name = t.Result.Name, USD_out = t.Result.USD_out });
+=======
             List<Currency> currency_in = new List<Currency> { };
             List<Currency> currency_out = new List<Currency> { };
             Bank b;
@@ -64,6 +77,7 @@ namespace std
                 //Console.WriteLine("Name - " + b.Name + ":\t\t" + "\tПокупка - " + b.USD_in + "\tПродажа - " + b.USD_out);
                 currency_in.Add(new Currency { Name = b.Name, USD_in = b.USD_in });
                 currency_out.Add(new Currency { Name = b.Name, USD_out = b.USD_out });
+>>>>>>> bc848b090e71018601f93b45099d9678dc34570d
             }
 
             var sortedCurrencyIn = from ci in currency_in
