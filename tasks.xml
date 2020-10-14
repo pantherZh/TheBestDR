@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<banks>
+  <bank name="AlfaBank">
+    <address>https://www.alfabank.by/currencys/</address>
+    <expression>&lt;span class=&quot;informer-currencies_value-txt&quot;&gt;(.*?)&lt;/span&gt;(.*?)&lt;span class=&quot;informer-currencies_value-txt&quot;&gt;(.*?)&lt;/span&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="IdeaBank">
+    <address>https://www.ideabank.by/</address>
+    <expression>&lt;td&gt;(.*?)&lt;/td&gt;(.*?)&lt;td&gt;(.*?)&lt;/td&gt;(.*?)&lt;td&gt;(.*?)&lt;/td&gt;</expression>
+    <group1>3</group1>
+    <group2>5</group2>
+  </bank>
+  <bank name="BelVeb">
+    <address>https://www.belveb.by/individual/</address>
+    <expression>&lt;td&gt;Доллар США&lt;/td&gt;(.*?)&lt;td&gt;(.*?)&lt;/td&gt;(.*?)&lt;td&gt;(.*?)&lt;/td&gt;</expression>
+    <group1>2</group1>
+    <group2>4</group2>
+  </bank>
+  <bank name="Bank Dabrabyt">
+    <address>https://bankdabrabyt.by/currency_exchange/</address>
+    <expression>&lt;td&gt;(.*?)&lt;/td&gt;(.*?)&lt;td&gt;(.*?)&lt;/td&gt;&lt;td&gt;(.*?)&lt;/td&gt;</expression>
+    <group1>3</group1>
+    <group2>4</group2>
+  </bank>
+  <bank name="AbsolytBank">
+    <address>https://absolutbank.by/exchange-rates.xml</address>
+    <expression>&lt;buy&gt;(.*?)&lt;/buy&gt;(.*?)&lt;sell&gt;(.*?)&lt;/sell&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="Rbank">
+    <address>https://rbank.by/</address>
+    <expression>&lt;span class=&quot;new-summ&quot;&gt;(.*?)&lt;/span&gt;(.*?)&lt;span class=&quot;new-summ&quot;&gt;(.*?)&lt;/span&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="Bps-sberbank">
+    <address>https://www.bps-sberbank.by/</address>
+    <expression>&lt;div class=&quot;BlockCurrencyExchangeRates__rate-item_buy-rate&quot;&gt;(.*?)&lt;/div&gt;(.*?)&lt;div class=&quot;BlockCurrencyExchangeRates__rate-item_sell-rate&quot;&gt;(.*?)&lt;/div&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="BsbBank">
+    <address>https://www.bsb.by/</address>
+    <expression>&lt;span class=&quot;exchange-scale&quot;&gt;(.*?)&lt;/span&gt;(.*?)&lt;/th&gt;(.*?)&lt;td&gt;(.*?)&lt;/td&gt;(.*?)&lt;td&gt;(.*?)&lt;/td&gt;</expression>
+    <group1>4</group1>
+    <group2>6</group2>
+  </bank>
+  <bank name="BtaBank">
+    <address>https://bta.by/currency-courses/</address>
+    <expression>&lt;div class=&quot;result-sum--courses-sum&quot;&gt;(\s+.*?)&lt;/div&gt;(.*?)&lt;div class=&quot;result-sum--courses-sum&quot;&gt;(\s+.*?)&lt;/div&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="Vtb Bank">
+    <address>https://www.vtb-bank.by/sites/default/files/rates.xml</address>
+    <expression>&lt;code&gt;usd&lt;/code&gt;&lt;buy&gt;(.*?)&lt;/buy&gt;&lt;sell&gt;(.*?)&lt;/sell&gt;</expression>
+    <group1>1</group1>
+    <group2>2</group2>
+  </bank>
+  <bank name="BelgazpromBank">
+    <address>https://belgazprombank.by/about/kursi_valjut/</address>
+    <expression>&lt;div class=&quot;range-row&quot;&gt;(.*?)&lt;/div&gt;(.*?)&lt;div class=&quot;range-row&quot;&gt;(.*?)&lt;/div&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="BelagropromBank">
+    <address>https://belapb.by/CashExRatesDaily.php?ondate=09/26/2020</address>
+    <expression>&lt;Name&gt;Доллар США&lt;/Name&gt;(.*?)&lt;RateBuy&gt;(.*?)&lt;/RateBuy&gt;(.*?)&lt;RateSell&gt;(.*?)&lt;/RateSell&gt;</expression>
+    <group1>2</group1>
+    <group2>4</group2>
+  </bank>
+  <bank name="BelarusBank">
+    <address>https://belarusbank.by/api/kursExchange?city=Минск</address>
+    <expression>&quot;USD_in&quot;:&quot;(.*?)&quot;,&quot;USD_out&quot;:&quot;(.*?)&quot;,</expression>
+    <group1>1</group1>
+    <group2>2</group2>
+  </bank>
+  <bank name="BelinvestBank">
+    <address>https://www.belinvestbank.by/exchange-rates/courses-tab-cashless</address>
+    <expression>&lt;td class=&quot;courses-table__td courses-table__td_buy&quot;&gt;(.*?)&lt;/td&gt;(.*?)&lt;td class=&quot;courses-table__td courses-table__td_sell&quot;&gt;(.*?)&lt;/td&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="Rrb">
+    <address>https://www.rrb.by/cursi</address>
+    <expression>&lt;span&gt;USD/BYN&lt;/span&gt;(.*?)&lt;i&gt;(.*?)(\s\|\s)([0-9]+\.[0-9]+)&lt;/i&gt;</expression>
+    <group1>2</group1>
+    <group2>4</group2>
+  </bank>
+  <bank name="ParitetBank">
+    <address>https://www.paritetbank.by/private/</address>
+    <expression>&lt;span&gt;1 USD&lt;/span&gt;(.*?)&lt;span class=&quot;(.*?)&quot;&gt;(.*?)&lt;/span&gt;(.*?)&lt;span class=&quot;(.*?)&quot;&gt;(.*?)&lt;/span&gt;</expression>
+    <group1>3</group1>
+    <group2>6</group2>
+  </bank>
+  <bank name="Bnb">
+    <address>https://bnb.by/</address>
+    <expression>&lt;span class=&quot;js-action_chtext&quot;&gt;(.*?)&lt;/span&gt;(.*?)&lt;span class=&quot;js-action_chtext&quot;&gt;(.*?)&lt;/span&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+    <bank name="Mtb">
+    <address>https://www.mtbank.by/currxml.php?</address>
+    <expression>&lt;code&gt;USD&lt;/code&gt;(.*?)&lt;purchase&gt;(.*?)&lt;/purchase&gt;(.*?)&lt;sale&gt;(.*?)&lt;/sale&gt;</expression>
+    <group1>2</group1>
+    <group2>4</group2>
+  </bank>
+  <bank name="Stbank">
+    <address>https://www.stbank.by/</address>
+    <expression>&lt;div class=&quot;exchange-course-item__value&quot;&gt;(.*?)&lt;/div&gt;&lt;div class=&quot;exchange-course-item__value&quot;&gt;(.*?)&lt;/div&gt;</expression>
+    <group1>1</group1>
+    <group2>2</group2>
+  </bank>
+  <bank name="FransaBank">
+    <address>https://fransabank.by/</address>
+    <expression>&lt;span class=&quot;num&quot;&gt;(.*?)&lt;/span&gt;(.*?)&lt;span class=&quot;num&quot;&gt;(.*?)&lt;/span&gt;</expression>
+    <group1>1</group1>
+    <group2>3</group2>
+  </bank>
+  <bank name="TcBank">
+    <address>https://www.tcbank.by/</address>
+    <expression>([0-9]+\.[0-9]+)(.*?)([0-9]+\.[0-9]+)(.*?)([0-9]+\.[0-9]+)(.*?)([0-9]+\.[0-9]+)</expression>
+    <group1>5</group1>
+    <group2>7</group2>
+  </bank>
+  <bank name="Technobank">
+    <address>https://www.tb.by/individuals/</address>
+    <expression>&lt;strong&gt;USD&lt;/strong&gt;(.*?)&lt;span class=&quot;currency-media-new-curr&quot;&gt;(.*?)&lt;/span&gt;(.*?)&lt;span class=&quot;currency-media-new-curr&quot;&gt;(.*?)&lt;/span&gt;</expression>
+    <group1>2</group1>
+    <group2>4</group2>
+  </bank>
+  <bank name="Zepterbank">
+    <address>https://www.zepterbank.by/personal/services/currency/</address>
+    <expression>&lt;td&gt;USD&lt;/td&gt;(.*?)&lt;td class=&quot;rate_val &quot;&gt;(.*?)&lt;/td&gt;(.*?)&lt;td class=&quot;rate_val &quot;&gt;(.*?)&lt;/td&gt;</expression>
+    <group1>2</group1>
+    <group2>4</group2>
+  </bank>
+</banks>
