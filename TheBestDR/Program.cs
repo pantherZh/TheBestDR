@@ -28,64 +28,16 @@ namespace std
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(@"D:\DELETE_PLS_TheBestDollarRate\tasks.xml");
             XmlElement xRoot = xDoc.DocumentElement;
-            string name = "", expression = "", address = "";
-            int group1 = 0, group2 = 0;
 
             List<Bank> tasks = new List<Bank>();
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            /*
-            Parallel.For(0, xRoot.ChildNodes.Count, (int number) => 
-            {
-                XmlNode attr = xRoot.ChildNodes[number].Attributes.GetNamedItem("name");
-                if (attr != null)
-                {
-                    foreach (XmlNode childnode in xRoot.ChildNodes[number].ChildNodes)
-                    {
-                        if (childnode.Name == "address")
-                            address = childnode.InnerText;
+            Console.WriteLine("Start, всего банков " + xRoot.ChildNodes.Count);
 
-                        if (childnode.Name == "expression")
-                            expression = childnode.InnerText;
-                        if (childnode.Name == "group1")
-                            group1 = Int32.Parse(childnode.InnerText);
-                        if (childnode.Name == "group2")
-                            group2 = Int32.Parse(childnode.InnerText);
-                    }
-                }
-
-
-                tasks[number] = new Task<Bank>(() => new Bank(attr.Value, address, expression, group1, group2));
-                tasks[number].Start();
-                i++;
-            });*/
-
-
-            foreach (XmlElement xnode in xRoot)
-            {
-                XmlNode attr = xnode.Attributes.GetNamedItem("name");
-
-                if (attr != null)
-                    name = attr.Value;
-
-                foreach (XmlNode childnode in xnode.ChildNodes)
-                {
-                    if (childnode.Name == "address")
-                        address = childnode.InnerText;
-
-                    if (childnode.Name == "expression")
-                        expression = childnode.InnerText;
-                    if (childnode.Name == "group1")
-                        group1 = Int32.Parse(childnode.InnerText);
-                    if (childnode.Name == "group2")
-                        group2 = Int32.Parse(childnode.InnerText);
-                }
-
-                tasks.Add(new Bank(name, address, expression, group1, group2));
-            }
-
-            Console.WriteLine("Start ");
+            //Одно из двух
+            tasks = startParallelForEach(xRoot);
+            //startForeach(xRoot, ref tasks);
 
             while (tasks.Count > 0)
             {
@@ -93,16 +45,26 @@ namespace std
                 {
                     if (tasks[a].Yes)
                     {
-                        Console.WriteLine(tasks[a].Name + ", removed " + a);
-                        tasks.RemoveAt(a);
+                        //Console.WriteLine(tasks[a].Name + " удален " + a + ", осталось " + tasks.Count + ", затрачено всего " + stopwatch.ElapsedMilliseconds + "мс");
+                        Console.WriteLine($"{tasks[a].Name} -> {tasks[a].USD_in}/{tasks[a].USD_out}, осталось " + (tasks.Count -1) + ", elapsed time -> " + stopwatch.ElapsedMilliseconds + "ms");
+                        tasks.Remove(tasks[a]);
+                        continue;
                     }
 
-                    //else  Console.WriteLine($"[{a}] Blocked, skip");
+                    if(tasks[a].error != null)
+                    {
+                        Console.WriteLine($"При запросе к банку {tasks[a].Name} произошло исключение типа {tasks[a].error.Message}, удаляю");
+                        tasks.Remove(tasks[a]);
+                    }
                 }
             }
 
             stopwatch.Stop();
             Console.WriteLine("End tasks, elapsed time(ms) ->" + stopwatch.ElapsedMilliseconds);
+
+            Console.WriteLine("\n\n\n");
+
+
 
             //Task<Bank>[] tasks = new Task<Bank>[]
             //{
@@ -197,7 +159,68 @@ namespace std
 
         }
 
+        public static void startForeach(XmlElement xRoot, ref List<Bank> tasks)
+        {
+            string name = "", expression = "", address = "";
+            int group1 = 0, group2 = 0;
 
+            foreach (XmlElement xnode in xRoot)
+            {
+                XmlNode attr = xnode.Attributes.GetNamedItem("name");
+
+                if (attr != null)
+                    name = attr.Value;
+
+                foreach (XmlNode childnode in xnode.ChildNodes)
+                {
+                    if (childnode.Name == "address")
+                        address = childnode.InnerText;
+
+                    if (childnode.Name == "expression")
+                        expression = childnode.InnerText;
+                    if (childnode.Name == "group1")
+                        group1 = Int32.Parse(childnode.InnerText);
+                    if (childnode.Name == "group2")
+                        group2 = Int32.Parse(childnode.InnerText);
+                }
+
+                tasks.Add(new Bank(name, address, expression, group1, group2));
+            }
+        }
+
+
+        public static List<Bank> startParallelForEach(XmlElement xRoot)
+        {
+            List<Bank> tasks = new List<Bank>();
+
+            string name = "", expression = "", address = "";
+            int group1 = 0, group2 = 0;
+
+            ParallelLoopResult result = Parallel.For(0, xRoot.ChildNodes.Count, (int number) =>
+            {
+                Console.WriteLine("Добавление банка " + number);
+
+                name = xRoot.ChildNodes[number].Attributes["name"].Value;
+
+                foreach (XmlNode childnode in xRoot.ChildNodes[number].ChildNodes)
+                {
+                    if (childnode.Name == "address")
+                        address = childnode.InnerText;
+                    if (childnode.Name == "expression")
+                        expression = childnode.InnerText;
+                    if (childnode.Name == "group1")
+                        group1 = Int32.Parse(childnode.InnerText);
+                    if (childnode.Name == "group2")
+                        group2 = Int32.Parse(childnode.InnerText);
+                }
+
+                tasks.Add(new Bank(name, address, expression, group1, group2));
+            });
+
+            Thread.Sleep(100);
+
+            return tasks;
+        }
     }
 
 }
