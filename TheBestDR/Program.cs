@@ -8,6 +8,9 @@ using System.Text;
 using System.Linq;
 using System.Xml;
 
+using System.Threading;
+using System.Diagnostics;
+
 namespace std
 {
     class Program
@@ -20,24 +23,25 @@ namespace std
 
             Bank nb = new Bank("Nb rb", "https://www.nbrb.by/api/exrates/rates/145", @"""Cur_OfficialRate"":(.*?)}", 1, 1);//национальный банк - валюта вверху
             Console.WriteLine($"\t\t-----Курс национального банка РБ: {nb.USD_in}-----");
-            
+
             int i = 0;
             XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(@"C:\Users\alesy\source\repos\TheBestDR\tasks.xml");
+            xDoc.Load(@"D:\DELETE_PLS_TheBestDollarRate\tasks.xml");
             XmlElement xRoot = xDoc.DocumentElement;
             string name = "", expression = "", address = "";
             int group1 = 0, group2 = 0;
-            Task<Bank>[] tasks = new Task<Bank>[23];
 
+            List<Bank> tasks = new List<Bank>();
 
-            foreach (XmlElement xnode in xRoot)
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            /*
+            Parallel.For(0, xRoot.ChildNodes.Count, (int number) => 
             {
-
-                XmlNode attr = xnode.Attributes.GetNamedItem("name");
+                XmlNode attr = xRoot.ChildNodes[number].Attributes.GetNamedItem("name");
                 if (attr != null)
                 {
-
-                    foreach (XmlNode childnode in xnode.ChildNodes)
+                    foreach (XmlNode childnode in xRoot.ChildNodes[number].ChildNodes)
                     {
                         if (childnode.Name == "address")
                             address = childnode.InnerText;
@@ -50,18 +54,56 @@ namespace std
                             group2 = Int32.Parse(childnode.InnerText);
                     }
                 }
-            
-               
-                    tasks[i] = new Task<Bank>(() => new Bank(attr.Value, address, expression, group1, group2));
-                    tasks[i].Start();
-                    i++;
-                
+
+
+                tasks[number] = new Task<Bank>(() => new Bank(attr.Value, address, expression, group1, group2));
+                tasks[number].Start();
+                i++;
+            });*/
+
+
+            foreach (XmlElement xnode in xRoot)
+            {
+                XmlNode attr = xnode.Attributes.GetNamedItem("name");
+
+                if (attr != null)
+                    name = attr.Value;
+
+                foreach (XmlNode childnode in xnode.ChildNodes)
+                {
+                    if (childnode.Name == "address")
+                        address = childnode.InnerText;
+
+                    if (childnode.Name == "expression")
+                        expression = childnode.InnerText;
+                    if (childnode.Name == "group1")
+                        group1 = Int32.Parse(childnode.InnerText);
+                    if (childnode.Name == "group2")
+                        group2 = Int32.Parse(childnode.InnerText);
+                }
+
+                tasks.Add(new Bank(name, address, expression, group1, group2));
             }
-           Task.WaitAll(tasks);
-          
-           
-            foreach (var t in tasks)
-                Console.WriteLine("Name - " + t.Result.Name + ":\t\t" + "\tПродажа - " + t.Result.USD_out + "\tПокупка - " + t.Result.USD_in);
+
+            Console.WriteLine("Start ");
+
+            while (tasks.Count > 0)
+            {
+                for (int a = 0; a < tasks.Count; a++)
+                {
+                    if (tasks[a].Yes)
+                    {
+                        Console.WriteLine(tasks[a].Name + ", removed " + a);
+                        tasks.RemoveAt(a);
+                    }
+
+                    //else  Console.WriteLine($"[{a}] Blocked, skip");
+                }
+            }
+
+            stopwatch.Stop();
+            Console.WriteLine("End tasks, elapsed time(ms) ->" + stopwatch.ElapsedMilliseconds);
+
             //Task<Bank>[] tasks = new Task<Bank>[]
             //{
             //    new Task<Bank>(() => new Bank("AlfaBank", "https://www.alfabank.by/currencys/", @"<span class=""informer-currencies_value-txt"">(.*?)</span>(.*?)<span class=""informer-currencies_value-txt"">(.*?)</span>", 1, 3)),
@@ -157,5 +199,5 @@ namespace std
 
 
     }
-        
+
 }
